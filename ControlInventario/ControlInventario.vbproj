@@ -73,11 +73,23 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.vb">
+    <Compile Include="Almacen.Designer.vb">
+      <DependentUpon>Almacen.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Almacen.vb">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.vb">
-      <DependentUpon>Form1.vb</DependentUpon>
+    <Compile Include="Entrada.Designer.vb">
+      <DependentUpon>Entrada.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Entrada.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Operaciones.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Operaciones.Designer.vb">
+      <DependentUpon>Operaciones.vb</DependentUpon>
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
@@ -95,13 +107,43 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Salida.Designer.vb">
+      <DependentUpon>Salida.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Salida.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Usuarios.Designer.vb">
+      <DependentUpon>Usuarios.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Usuarios.vb">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Almacen.resx">
+      <DependentUpon>Almacen.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Entrada.resx">
+      <DependentUpon>Entrada.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Operaciones.ak.resx">
+      <DependentUpon>Operaciones.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Operaciones.resx">
+      <DependentUpon>Operaciones.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
       <CustomToolNamespace>My.Resources</CustomToolNamespace>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Salida.resx">
+      <DependentUpon>Salida.vb</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Usuarios.resx">
+      <DependentUpon>Usuarios.vb</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
@@ -115,6 +157,18 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\FlechaD.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\FlechaI.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\binoculares2.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\documento.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>
