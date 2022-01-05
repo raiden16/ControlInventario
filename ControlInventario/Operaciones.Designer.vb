@@ -26,11 +26,13 @@ Partial Class Operaciones
         Me.Salida = New System.Windows.Forms.Button()
         Me.Usuarios = New System.Windows.Forms.Button()
         Me.Almacen = New System.Windows.Forms.Button()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Entrada
         '
-        Me.Entrada.Location = New System.Drawing.Point(12, 27)
+        Me.Entrada.Location = New System.Drawing.Point(12, 43)
         Me.Entrada.Name = "Entrada"
         Me.Entrada.Size = New System.Drawing.Size(75, 23)
         Me.Entrada.TabIndex = 0
@@ -39,7 +41,7 @@ Partial Class Operaciones
         '
         'Salida
         '
-        Me.Salida.Location = New System.Drawing.Point(127, 27)
+        Me.Salida.Location = New System.Drawing.Point(93, 43)
         Me.Salida.Name = "Salida"
         Me.Salida.Size = New System.Drawing.Size(75, 23)
         Me.Salida.TabIndex = 1
@@ -48,7 +50,7 @@ Partial Class Operaciones
         '
         'Usuarios
         '
-        Me.Usuarios.Location = New System.Drawing.Point(237, 27)
+        Me.Usuarios.Location = New System.Drawing.Point(255, 43)
         Me.Usuarios.Name = "Usuarios"
         Me.Usuarios.Size = New System.Drawing.Size(75, 23)
         Me.Usuarios.TabIndex = 2
@@ -57,19 +59,30 @@ Partial Class Operaciones
         '
         'Almacen
         '
-        Me.Almacen.Location = New System.Drawing.Point(344, 27)
+        Me.Almacen.Location = New System.Drawing.Point(174, 43)
         Me.Almacen.Name = "Almacen"
         Me.Almacen.Size = New System.Drawing.Size(75, 23)
         Me.Almacen.TabIndex = 3
         Me.Almacen.Text = "Almacen"
         Me.Almacen.UseVisualStyleBackColor = True
         '
+        'PictureBox1
+        '
+        Me.PictureBox1.Image = Global.ControlInventario.My.Resources.Resources.Confi2
+        Me.PictureBox1.Location = New System.Drawing.Point(12, 8)
+        Me.PictureBox1.Name = "PictureBox1"
+        Me.PictureBox1.Size = New System.Drawing.Size(24, 23)
+        Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.PictureBox1.TabIndex = 4
+        Me.PictureBox1.TabStop = False
+        '
         'Operaciones
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.SystemColors.Control
-        Me.ClientSize = New System.Drawing.Size(431, 78)
+        Me.ClientSize = New System.Drawing.Size(343, 77)
+        Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.Almacen)
         Me.Controls.Add(Me.Usuarios)
         Me.Controls.Add(Me.Salida)
@@ -79,6 +92,7 @@ Partial Class Operaciones
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Operaciones de Inventario"
+        CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
@@ -87,4 +101,5 @@ Partial Class Operaciones
     Friend WithEvents Salida As Button
     Friend WithEvents Usuarios As Button
     Friend WithEvents Almacen As Button
+    Friend WithEvents PictureBox1 As PictureBox
 End Class

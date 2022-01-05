@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="Server" Type="System.String" Scope="User">
-      <Value Profile="(Default)">192.168.10.12</Value>
+      <Value Profile="(Default)">192.168.10.12,14334\SQLEXPRESS01</Value>
     </Setting>
     <Setting Name="DataBase" Type="System.String" Scope="User">
       <Value Profile="(Default)">Tekno-Step</Value>
@@ -13,6 +13,15 @@
     </Setting>
     <Setting Name="PassSQL" Type="System.String" Scope="User">
       <Value Profile="(Default)">T3kno2018.*</Value>
+    </Setting>
+    <Setting Name="Ruta" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\lvazquez\Desktop\LL\XML y PDF\</Value>
+    </Setting>
+    <Setting Name="RutaLogo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\lvazquez\source\repos\ControlInventario\ControlInventario\bin\Debug\Iconos\</Value>
+    </Setting>
+    <Setting Name="NombreLogo" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Decoratussueños.jpg</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -30,11 +30,13 @@ Partial Class Entradas
         Me.Label3 = New System.Windows.Forms.Label()
         Me.ComboBox1 = New System.Windows.Forms.ComboBox()
         Me.Button1 = New System.Windows.Forms.Button()
+        Me.Impresora = New System.Windows.Forms.PictureBox()
         Me.PictureBox4 = New System.Windows.Forms.PictureBox()
         Me.PictureBox3 = New System.Windows.Forms.PictureBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Impresora, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -109,6 +111,16 @@ Partial Class Entradas
         Me.Button1.Text = "Crear"
         Me.Button1.UseVisualStyleBackColor = False
         '
+        'Impresora
+        '
+        Me.Impresora.Image = Global.ControlInventario.My.Resources.Resources.PDF
+        Me.Impresora.Location = New System.Drawing.Point(617, 9)
+        Me.Impresora.Name = "Impresora"
+        Me.Impresora.Size = New System.Drawing.Size(53, 31)
+        Me.Impresora.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Impresora.TabIndex = 14
+        Me.Impresora.TabStop = False
+        '
         'PictureBox4
         '
         Me.PictureBox4.Image = Global.ControlInventario.My.Resources.Resources.documento
@@ -154,6 +166,7 @@ Partial Class Entradas
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(681, 395)
+        Me.Controls.Add(Me.Impresora)
         Me.Controls.Add(Me.PictureBox4)
         Me.Controls.Add(Me.PictureBox3)
         Me.Controls.Add(Me.PictureBox2)
@@ -171,6 +184,7 @@ Partial Class Entradas
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
         Me.Text = "Entrada"
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Impresora, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
@@ -192,4 +206,5 @@ Partial Class Entradas
     Friend WithEvents PictureBox2 As PictureBox
     Friend WithEvents PictureBox3 As PictureBox
     Friend WithEvents PictureBox4 As PictureBox
+    Friend WithEvents Impresora As PictureBox
 End Class

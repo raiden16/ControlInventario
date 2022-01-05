@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <StartupObject>ControlInventario.My.MyApplication</StartupObject>
     <RootNamespace>ControlInventario</RootNamespace>
-    <AssemblyName>ControlInventario</AssemblyName>
+    <AssemblyName>Inventario</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
@@ -22,7 +22,7 @@
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
     <OutputPath>bin\Debug\</OutputPath>
-    <DocumentationFile>ControlInventario.xml</DocumentationFile>
+    <DocumentationFile>Inventario.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -32,7 +32,7 @@
     <DefineTrace>true</DefineTrace>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DocumentationFile>ControlInventario.xml</DocumentationFile>
+    <DocumentationFile>Inventario.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
   </PropertyGroup>
   <PropertyGroup>
@@ -48,6 +48,12 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.6.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="itextsharp, Version=5.5.13.2, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.5.13.2\lib\itextsharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
@@ -77,6 +83,12 @@
       <DependentUpon>Almacen.vb</DependentUpon>
     </Compile>
     <Compile Include="Almacen.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Configuración.Designer.vb">
+      <DependentUpon>Configuración.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Configuración.vb">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Entrada.Designer.vb">
@@ -124,6 +136,9 @@
     <EmbeddedResource Include="Almacen.resx">
       <DependentUpon>Almacen.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Configuración.resx">
+      <DependentUpon>Configuración.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Entrada.resx">
       <DependentUpon>Entrada.vb</DependentUpon>
     </EmbeddedResource>
@@ -157,6 +172,7 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\Iconos\FlechaD.png" />
@@ -169,6 +185,24 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="bin\Debug\Iconos\documento.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\Imprimir.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\Tekno-Step2020.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\Decora tus sueños.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\PDF.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\configuracion.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="bin\Debug\Iconos\Confi2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

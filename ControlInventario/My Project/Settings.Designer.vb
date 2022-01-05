@@ -56,7 +56,7 @@ Namespace My
         
         <Global.System.Configuration.UserScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("192.168.10.12")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("192.168.10.12,14334\SQLEXPRESS01")>  _
         Public Property Server() As String
             Get
                 Return CType(Me("Server"),String)
@@ -99,6 +99,43 @@ Namespace My
             End Get
             Set
                 Me("PassSQL") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Users\lvazquez\Desktop\LL\XML y PDF\")>  _
+        Public Property Ruta() As String
+            Get
+                Return CType(Me("Ruta"),String)
+            End Get
+            Set
+                Me("Ruta") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Users\lvazquez\source\repos\ControlInventario\ControlInventario\bin\Debug\Icon"& _ 
+            "os\")>  _
+        Public Property RutaLogo() As String
+            Get
+                Return CType(Me("RutaLogo"),String)
+            End Get
+            Set
+                Me("RutaLogo") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("Decoratussueños.jpg")>  _
+        Public Property NombreLogo() As String
+            Get
+                Return CType(Me("NombreLogo"),String)
+            End Get
+            Set
+                Me("NombreLogo") = value
             End Set
         End Property
     End Class

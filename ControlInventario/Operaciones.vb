@@ -25,7 +25,7 @@ Public Class Operaciones
 
             '---- armamos cadena de conexion
             stCadenaConexion = "data source=" & My.Settings.Server & ";initial catalog=" & My.Settings.DataBase & ";user id=" & My.Settings.UserSQL & ";password=" & My.Settings.PassSQL
-
+            '--& ";initial catalog=" & My.Settings.DataBase
             '---- realizamos conexion
             conexionSQL = New SqlConnection(stCadenaConexion)
 
@@ -55,6 +55,7 @@ Public Class Operaciones
             idcompra = "?"
             ubicacionError = "openConexionSQL"
             mensaje = "Error Interno. openConexionSQL: " & ex.Message
+            MsgBox(mensaje)
             'setlog(tipo, idcompra, ubicacionError, mensaje)
         End Try
     End Function
@@ -100,6 +101,11 @@ Public Class Operaciones
         closeConexionSQL()
         End
 
+    End Sub
+
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+        Me.Hide()
+        Configuración.Show()
     End Sub
 
 End Class

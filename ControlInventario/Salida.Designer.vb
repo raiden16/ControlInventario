@@ -36,11 +36,13 @@ Partial Class Salidas
         Me.Button1 = New System.Windows.Forms.Button()
         Me.ComboBox2 = New System.Windows.Forms.ComboBox()
         Me.Label4 = New System.Windows.Forms.Label()
+        Me.Impresora = New System.Windows.Forms.PictureBox()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.Impresora, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'TextBox1
@@ -168,11 +170,22 @@ Partial Class Salidas
         Me.Label4.TabIndex = 13
         Me.Label4.Text = "Departamento"
         '
+        'Impresora
+        '
+        Me.Impresora.Image = Global.ControlInventario.My.Resources.Resources.PDF
+        Me.Impresora.Location = New System.Drawing.Point(616, 11)
+        Me.Impresora.Name = "Impresora"
+        Me.Impresora.Size = New System.Drawing.Size(53, 31)
+        Me.Impresora.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage
+        Me.Impresora.TabIndex = 15
+        Me.Impresora.TabStop = False
+        '
         'Salidas
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(681, 395)
+        Me.Controls.Add(Me.Impresora)
         Me.Controls.Add(Me.Label4)
         Me.Controls.Add(Me.ComboBox2)
         Me.Controls.Add(Me.Button1)
@@ -196,6 +209,7 @@ Partial Class Salidas
         CType(Me.PictureBox3, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox4, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.Impresora, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -215,4 +229,5 @@ Partial Class Salidas
     Friend WithEvents Button1 As Button
     Friend WithEvents ComboBox2 As ComboBox
     Friend WithEvents Label4 As Label
+    Friend WithEvents Impresora As PictureBox
 End Class

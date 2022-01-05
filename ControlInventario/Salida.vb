@@ -2,11 +2,15 @@
 Imports System.Data.Sql
 Imports System.Data.DataSet
 Imports System.Data.DataViewManager
+Imports System.IO
+Imports iTextSharp.text
+Imports iTextSharp.text.pdf
 
 Public Class Salidas
 
     Dim Almacen, Departamento As String
     Dim conexionSQL As SqlConnection
+    Dim PDF As String
 
     Private Sub Salidas_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -475,6 +479,14 @@ Public Class Salidas
 
                 Info = DS.Tables(0).Rows.Count
                 Relleno = 10 - Info
+                DataGridView1.Columns.Clear()
+                DataGridView1.Rows.Clear()
+                DataGridView1.Columns.Add("Descripcion", "Descripcion *")
+                DataGridView1.Columns.Add("Marca", "Marca *")
+                DataGridView1.Columns.Add("Serie", "Serie *")
+                DataGridView1.Columns.Add("Modelo", "Modelo *")
+                DataGridView1.Columns.Add("Nombre", "Nombre *")
+                DataGridView1.Columns.Add("Comentarios", "Comentarios *")
                 DataGridView1.Rows.Add(Info + Relleno)
 
                 For cont As Integer = 0 To Info - 1
@@ -485,6 +497,13 @@ Public Class Salidas
                     DataGridView1.Item(3, cont).Value = DS.Tables(0).Rows(cont)("Modelo").ToString
                     DataGridView1.Item(4, cont).Value = DS.Tables(0).Rows(cont)("Nombre").ToString
                     DataGridView1.Item(5, cont).Value = DS.Tables(0).Rows(cont)("Comentarios").ToString
+
+                    DataGridView1.Item(0, cont).ReadOnly = True
+                    DataGridView1.Item(1, cont).ReadOnly = True
+                    DataGridView1.Item(2, cont).ReadOnly = True
+                    DataGridView1.Item(3, cont).ReadOnly = True
+                    DataGridView1.Item(4, cont).ReadOnly = True
+                    DataGridView1.Item(5, cont).ReadOnly = True
 
                 Next
 
@@ -823,5 +842,277 @@ Public Class Salidas
         End Try
 
     End Sub
+
+    Private Sub Impresora_Click(sender As Object, e As EventArgs) Handles Impresora.Click
+
+        Dim Salida As String
+        Dim query As String
+        Dim comm As New SqlCommand
+        Dim DA As New SqlDataAdapter
+        Dim DS As New System.Data.DataSet
+
+        Try
+
+            Salida = TextBox1.Text
+            query = "Select DocEntry from OIGE where DocNum=" & Salida
+            comm.CommandText = query
+            comm.Connection = conexionSQL
+            DA.SelectCommand = comm
+            DA.Fill(DS)
+
+            If DS.Tables(0).Rows.Count = 1 Then
+
+                'Busca o crea el PDF
+                ValidarDoc(Salida)
+
+            End If
+
+        Catch ex As Exception
+
+            MsgBox("Error Impresora_Click. " & ex.Message)
+
+        End Try
+
+    End Sub
+
+    Public Function ValidarDoc(ByVal Salida As String)
+
+        'MsgBox("Exportar Documento Exitoso")
+        Dim Ruta As String
+        PDF = Nothing
+
+        Try
+
+            Ruta = My.Settings.Ruta & "Salida"
+
+            Dim dir As New System.IO.DirectoryInfo(Ruta)
+
+            Dim fileList = dir.GetFiles("*.pdf", System.IO.SearchOption.TopDirectoryOnly)
+
+            Dim FileQuery = From file In fileList
+                            Where file.Extension = ".pdf" And file.Name.Trim.ToString.EndsWith(Salida & ".pdf") And file.Name.Trim.ToString.StartsWith(Salida & ".pdf")
+                            Order By file.CreationTime
+                            Select file
+
+            PDF = Ruta & "\" & Salida & ".pdf"
+
+            If FileQuery.Count > 0 Then
+
+                Dim p As New Process
+                p.StartInfo.FileName = PDF
+                p.StartInfo.Verb = "Open"
+                p.Start()
+
+            Else
+
+                CrearPDF(Salida)
+
+            End If
+
+        Catch ex As Exception
+
+            MsgBox("Error en ValidarDoc. " & ex.Message)
+
+        End Try
+
+    End Function
+
+    Public Function CrearPDF(ByVal Salida As String)
+
+        Dim query As String = "Select T0.*,T1.NombreAlmacen from OIGE T0 INNER JOIN OWHS T1 on T1.""Almacen""=T0.""Almacen"" where T0.DocNum=" & Salida
+        Dim comm, comm1 As New SqlCommand
+        Dim DA, DA1 As New SqlDataAdapter
+        Dim DS, DS1 As New System.Data.DataSet
+        Dim query1 As String
+        Dim oDoc As New iTextSharp.text.Document(PageSize.LETTER, 0, 0, 0, 0)
+        Dim pdfw As iTextSharp.text.pdf.PdfWriter
+        Dim cb As PdfContentByte
+        Dim fuente, fuenteInfo As iTextSharp.text.pdf.BaseFont
+        Dim NombreArchivo As String = My.Settings.Ruta & "Salida\" & Salida & ".pdf"
+        Dim DocEntry, Almacen, NombreAlmacen, FixCreateDate, FixFecha As String
+        Dim CreateDate, Fecha As Date
+        Dim Descripcion, Marca, Serie, Modelo, NombreEmpleado, Comentarios As String
+        Dim skip As Integer = 100
+        Dim image As Image
+
+
+        Try
+            pdfw = PdfWriter.GetInstance(oDoc, New FileStream(NombreArchivo, FileMode.Create, FileAccess.Write, FileShare.None))
+            'Apertura del documento.
+            oDoc.Open()
+            cb = pdfw.DirectContent
+            'Agregamos una pagina.
+            oDoc.NewPage()
+            'Iniciamos el flujo de bytes.
+            cb.BeginText()
+            'Instanciamos el objeto para la tipo de letra.
+            fuente = FontFactory.GetFont(FontFactory.HELVETICA, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.BOLD).BaseFont
+            fuenteInfo = FontFactory.GetFont(FontFactory.HELVETICA, iTextSharp.text.Font.DEFAULTSIZE, iTextSharp.text.Font.NORMAL).BaseFont
+            'iTextSharp.text.Font.DEFAULTSIZE
+            'Seteamos el tipo de letra y el tamaño.
+            cb.SetFontAndSize(fuente, 14)
+            'Seteamos el color del texto a escribir.
+            cb.SetColorFill(iTextSharp.text.BaseColor.BLACK)
+            'Aqui es donde se escribe el texto.
+            'Aclaracion: Por alguna razon la coordenada vertical siempre es tomada desde el borde inferior (de ahi que se calcule como “PageSize.A4.Height – 50″)
+
+            '------------Header
+            image = Image.GetInstance(My.Settings.RutaLogo & My.Settings.NombreLogo)
+            image.ScaleAbsolute(200, 50)
+            image.SetAbsolutePosition(30.0F, 730.0F)
+            cb.AddImage(image)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Control de Invetario Salidas", 300, PageSize.LETTER.Height - 35, 0)
+
+            comm.CommandText = query
+            comm.Connection = conexionSQL
+            DA.SelectCommand = comm
+            DA.Fill(DS)
+
+            DocEntry = DS.Tables(0).Rows(0)("DocEntry").ToString
+            Almacen = DS.Tables(0).Rows(0)("Almacen").ToString
+            NombreAlmacen = DS.Tables(0).Rows(0)("NombreAlmacen").ToString
+            CreateDate = DS.Tables(0).Rows(0)("CreateDate").ToString
+            Fecha = DS.Tables(0).Rows(0)("Fecha").ToString
+
+            FixCreateDate = CreateDate.Day & "-" & CreateDate.Month & "-" & CreateDate.Year
+            FixFecha = Fecha.Day & "-" & Fecha.Month & "-" & Fecha.Year
+
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, FixCreateDate, 360, PageSize.LETTER.Height - 50, 0)
+
+            cb.SetFontAndSize(fuente, 10)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Salida: ", 25, PageSize.LETTER.Height - skip, 0)
+            cb.SetFontAndSize(fuenteInfo, 10)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Salida, 80, PageSize.LETTER.Height - skip, 0)
+
+            skip = skip + 15
+            cb.SetFontAndSize(fuente, 10)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Almacen: ", 25, PageSize.LETTER.Height - skip, 0)
+            cb.SetFontAndSize(fuenteInfo, 10)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Almacen & " - " & NombreAlmacen, 80, PageSize.LETTER.Height - skip, 0)
+
+            skip = skip + 15
+            cb.SetFontAndSize(fuente, 10)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Fecha de Salida: ", 25, PageSize.LETTER.Height - skip, 0)
+            cb.SetFontAndSize(fuenteInfo, 10)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Fecha, 120, PageSize.LETTER.Height - skip, 0)
+
+            skip = skip + 20
+            cb.SetFontAndSize(fuente, 12)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Artículos", 260, PageSize.LETTER.Height - skip, 0)
+            skip = skip + 10
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "___________________________________________________________________________________", 25, PageSize.LETTER.Height - skip, 0)
+
+            query1 = "Select T0.*,T1.Nombre from IGE1 T0 Inner Join OUSR T1 on T1.""Usuario""=T0.""Usuario"" where T0.DocEntry=" & DocEntry
+            comm1.CommandText = query1
+            comm1.Connection = conexionSQL
+            DA1.SelectCommand = comm1
+            DA1.Fill(DS1)
+
+            If DS1.Tables(0).Rows.Count > 0 Then
+
+                For x = 0 To DS1.Tables(0).Rows.Count - 1
+
+                    Descripcion = DS1.Tables(0).Rows(x)("Descripcion").ToString()
+                    Marca = DS1.Tables(0).Rows(x)("Marca").ToString()
+                    Serie = DS1.Tables(0).Rows(x)("Serie").ToString()
+                    Modelo = DS1.Tables(0).Rows(x)("Modelo").ToString()
+                    NombreEmpleado = DS1.Tables(0).Rows(x)("Nombre").ToString()
+                    Comentarios = DS1.Tables(0).Rows(x)("Comentarios").ToString()
+
+                    skip = skip + 20
+
+                    If skip > 720 Then
+                        cb.EndText()
+                        oDoc.NewPage()
+                        cb.BeginText()
+                        cb.SetColorFill(iTextSharp.text.BaseColor.BLACK)
+                        skip = 30
+                    End If
+
+                    cb.SetFontAndSize(fuente, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Descripcion: ", 25, PageSize.LETTER.Height - skip, 0)
+                    cb.SetFontAndSize(fuenteInfo, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Descripcion, 90, PageSize.LETTER.Height - skip, 0)
+
+                    skip = skip + 10
+                    cb.SetFontAndSize(fuente, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Marca: ", 25, PageSize.LETTER.Height - skip, 0)
+                    cb.SetFontAndSize(fuenteInfo, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Marca, 60, PageSize.LETTER.Height - skip, 0)
+
+                    skip = skip + 10
+                    cb.SetFontAndSize(fuente, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Serie: ", 25, PageSize.LETTER.Height - skip, 0)
+                    cb.SetFontAndSize(fuenteInfo, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Serie, 55, PageSize.LETTER.Height - skip, 0)
+
+                    skip = skip + 10
+                    cb.SetFontAndSize(fuente, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Modelo: ", 25, PageSize.LETTER.Height - skip, 0)
+                    cb.SetFontAndSize(fuenteInfo, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Modelo, 65, PageSize.LETTER.Height - skip, 0)
+
+                    skip = skip + 10
+                    cb.SetFontAndSize(fuente, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Nombre: ", 25, PageSize.LETTER.Height - skip, 0)
+                    cb.SetFontAndSize(fuenteInfo, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, NombreEmpleado, 70, PageSize.LETTER.Height - skip, 0)
+
+                    skip = skip + 10
+                    cb.SetFontAndSize(fuente, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Comentarios: ", 25, PageSize.LETTER.Height - skip, 0)
+                    cb.SetFontAndSize(fuenteInfo, 10)
+                    cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, Comentarios, 95, PageSize.LETTER.Height - skip, 0)
+
+                Next
+
+            End If
+
+            skip = 720
+            cb.SetFontAndSize(fuente, 10)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "_____________________________", 55, PageSize.LETTER.Height - skip, 0)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "_____________________________", 350, PageSize.LETTER.Height - skip, 0)
+            skip = skip + 15
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Nombre y Firma", 100, PageSize.LETTER.Height - skip, 0)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "Nombre y Firma", 390, PageSize.LETTER.Height - skip, 0)
+            skip = skip + 15
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "(Sistemas)", 110, PageSize.LETTER.Height - skip, 0)
+            cb.ShowTextAligned(PdfContentByte.ALIGN_LEFT, "(Encargado Área)", 390, PageSize.LETTER.Height - skip, 0)
+
+
+            'Fin del flujo de bytes.
+            cb.EndText()
+            'Forzamos vaciamiento del buffer.
+            pdfw.Flush()
+            'Cerramos el documento.
+            oDoc.Close()
+
+            Dim p As New Process
+            p.StartInfo.FileName = PDF
+            p.StartInfo.Verb = "Open"
+            p.Start()
+
+            Return NombreArchivo
+
+        Catch ex As Exception
+
+            'Si hubo una excepcion y el archivo existe …
+            If File.Exists(NombreArchivo) Then
+                'Cerramos el documento si esta abierto.
+                'Y asi desbloqueamos el archivo para su eliminacion.
+                If oDoc.IsOpen Then oDoc.Close()
+                '… lo eliminamos de disco.
+                File.Delete(NombreArchivo)
+            End If
+
+            MsgBox("Error al crear el pdf, PDF. " & ex.Message)
+
+        Finally
+            cb = Nothing
+            pdfw = Nothing
+            oDoc = Nothing
+        End Try
+
+    End Function
 
 End Class
